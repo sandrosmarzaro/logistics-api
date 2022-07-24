@@ -1,6 +1,6 @@
 package com.logisticsapi.repositories;
 
-import com.logisticsapi.model.Client;
+import com.logisticsapi.models.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

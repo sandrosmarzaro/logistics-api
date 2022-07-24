@@ -1,6 +1,6 @@
 package com.logisticsapi.controllers;
 
-import com.logisticsapi.model.Client;
+import com.logisticsapi.models.Client;
 import com.logisticsapi.repositories.ClientRepository;
 import com.logisticsapi.services.ClientService;
 import lombok.AllArgsConstructor;

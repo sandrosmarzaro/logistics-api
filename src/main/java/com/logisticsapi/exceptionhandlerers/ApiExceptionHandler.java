@@ -1,6 +1,6 @@
 package com.logisticsapi.exceptionhandlerers;
 
-import com.logisticsapi.exceptions.EmailException;
+import com.logisticsapi.exceptions.DomainException;
 import lombok.AllArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ExceptionGenerated exceptionGenerated = new ExceptionGenerated(
                 "Invalid values for parameters",
                 status.value(),
-                LocalDateTime.now(),
+                OffsetDateTime.now(),
                 fieldErrors
         );
         return super.handleExceptionInternal(
@@ -51,12 +51,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 request
         );
     }
-    @ExceptionHandler(EmailException.class)
-    public ResponseEntity<Object> handleEmailException(EmailException exception, WebRequest request) {
+    @ExceptionHandler(DomainException.class)
+    public ResponseEntity<Object> handleEmailException(DomainException exception, WebRequest request) {
         ExceptionGenerated exceptionGenerated = new ExceptionGenerated(
             exception.getMessage(),
             HttpStatus.BAD_REQUEST.value(),
-            LocalDateTime.now(),
+                OffsetDateTime.now(),
             null
         );
 
