@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,6 +32,9 @@ public class Delivery {
     @NotNull
     private BigDecimal rate;
 
+    @OneToMany(mappedBy = "delivery", cascade = CascadeType.ALL)
+    private List<Occurrence> occurrences;
+
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status;
 
@@ -39,4 +43,13 @@ public class Delivery {
 
     @Column(name = "finishedat")
     private OffsetDateTime finishedAt;
+
+    public Occurrence addOccurrence(String description) {
+        Occurrence occurrence = new Occurrence();
+        occurrence.setDescription(description);
+        occurrence.setRegistrationDate(OffsetDateTime.now());
+        occurrence.setDelivery(this);
+        this.occurrences.add(occurrence);
+        return occurrence;
+    }
 }

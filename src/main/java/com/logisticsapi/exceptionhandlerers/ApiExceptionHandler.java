@@ -1,6 +1,7 @@
 package com.logisticsapi.exceptionhandlerers;
 
 import com.logisticsapi.exceptions.DomainException;
+import com.logisticsapi.exceptions.NotFoundEntityException;
 import lombok.AllArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -66,6 +67,24 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             new HttpHeaders(),
             HttpStatus.BAD_REQUEST,
             request
+        );
+    }
+
+    @ExceptionHandler(NotFoundEntityException.class)
+    public ResponseEntity<Object> handleNotFoundEntityException(DomainException exception, WebRequest request) {
+        ExceptionGenerated exceptionGenerated = new ExceptionGenerated(
+                exception.getMessage(),
+                HttpStatus.NOT_FOUND.value(),
+                OffsetDateTime.now(),
+                null
+        );
+
+        return handleExceptionInternal(
+                exception,
+                exceptionGenerated,
+                new HttpHeaders(),
+                HttpStatus.BAD_REQUEST,
+                request
         );
     }
 }
