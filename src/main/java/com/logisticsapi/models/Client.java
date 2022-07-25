@@ -7,7 +7,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -18,7 +17,6 @@ public class Client {
 
     @EqualsAndHashCode.Include
     @Id
-    @NotNull(groups = ValidationGroup.ClientId.class)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @NotBlank

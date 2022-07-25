@@ -1,6 +1,9 @@
 package com.logisticsapi.controllers;
 
+import com.logisticsapi.mappers.DeliveryMapper;
 import com.logisticsapi.models.Delivery;
+import com.logisticsapi.reponses.DeliveryResponse;
+import com.logisticsapi.reponses.inputs.DeliveryInput;
 import com.logisticsapi.repositories.DeliveryRepository;
 import com.logisticsapi.services.CreateDeliveryService;
 import lombok.AllArgsConstructor;
@@ -18,22 +21,24 @@ public class DeliveryController {
 
     private CreateDeliveryService deliveryService;
     private DeliveryRepository deliveryRepository;
+    private DeliveryMapper deliveryMapper;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Delivery create(@Valid @RequestBody Delivery delivery) {
-        return deliveryService.create(delivery);
+    public DeliveryResponse create(@Valid @RequestBody DeliveryInput delivery) {
+        Delivery createdDelivery = deliveryMapper.map(delivery);
+        return deliveryMapper.map(deliveryService.create(createdDelivery));
     }
 
     @GetMapping
-    public List<Delivery> readAll() {
-        return deliveryRepository.findAll();
+    public List<DeliveryResponse> readAll() {
+        return deliveryMapper.mapAll(deliveryRepository.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Delivery> readById(@PathVariable Long id) {
+    public ResponseEntity<DeliveryResponse> readById(@PathVariable Long id) {
         return deliveryRepository.findById(id)
-            .map(ResponseEntity::ok)
+            .map(delivery -> ResponseEntity.ok(deliveryMapper.map(delivery)))
             .orElse(ResponseEntity.notFound().build());
     }
 }
