@@ -6,6 +6,7 @@ import com.logisticsapi.reponses.DeliveryResponse;
 import com.logisticsapi.reponses.inputs.DeliveryInput;
 import com.logisticsapi.repositories.DeliveryRepository;
 import com.logisticsapi.services.CreateDeliveryService;
+import com.logisticsapi.services.FinalizationDeliveryService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ public class DeliveryController {
     private CreateDeliveryService deliveryService;
     private DeliveryRepository deliveryRepository;
     private DeliveryMapper deliveryMapper;
+    private FinalizationDeliveryService finalizationDeliveryService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -40,5 +42,11 @@ public class DeliveryController {
         return deliveryRepository.findById(id)
             .map(delivery -> ResponseEntity.ok(deliveryMapper.map(delivery)))
             .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}/finishing")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void finish(@PathVariable Long id) {
+        finalizationDeliveryService.finalizeDelivery(id);
     }
 }

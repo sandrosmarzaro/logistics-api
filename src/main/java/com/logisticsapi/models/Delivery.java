@@ -1,5 +1,6 @@
 package com.logisticsapi.models;
 
+import com.logisticsapi.exceptions.DomainException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -51,5 +52,14 @@ public class Delivery {
         occurrence.setDelivery(this);
         this.occurrences.add(occurrence);
         return occurrence;
+    }
+
+    public void finish() {
+        boolean isNotFinished = !this.status.equals(DeliveryStatus.PENDING);
+        if (isNotFinished) {
+            throw new DomainException("Delivery already finished or canceled");
+        }
+        this.status = DeliveryStatus.FINISHED;
+        this.finishedAt = OffsetDateTime.now();
     }
 }
